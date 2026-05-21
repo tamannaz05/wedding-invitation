@@ -16,13 +16,191 @@
     section { padding: 80px 10%; }
     h1,h2,h3 { font-family: 'Cinzel', serif; }
 
+    /* ====== ENVELOPE INTRO OVERLAY ====== */
+    #envelope-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #fdf0e6;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: overlayFadeOut 0.6s ease 3.4s forwards;
+      pointer-events: none;
+    }
+
+    .env-wrapper {
+      position: relative;
+      width: 280px;
+      height: 200px;
+      animation: envBounceIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    /* Envelope body */
+    .env-body {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 160px;
+      background: #e8c99a;
+      border-radius: 6px 6px 14px 14px;
+      box-shadow: 0 12px 40px rgba(176,137,104,0.35);
+      overflow: hidden;
+    }
+
+    /* Side flaps (V-shape lines on envelope front) */
+    .env-body::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 0 80px 140px;
+      border-color: transparent transparent #d4aa7d transparent;
+    }
+    .env-body::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 140px 80px 0;
+      border-color: transparent #d4aa7d transparent transparent;
+    }
+
+    /* Envelope flap (top triangle) */
+    .env-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 110px;
+      transform-origin: top center;
+      z-index: 3;
+      animation: flapOpen 0.7s ease 1.1s forwards;
+    }
+    .env-flap::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 110px 140px 0 140px;
+      border-color: #d4b896 transparent transparent transparent;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+    }
+
+    /* The invitation card inside */
+    .env-card {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 130px;
+      background: white;
+      border-radius: 8px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      animation: cardRise 0.8s cubic-bezier(.34,1.3,.64,1) 1.7s both;
+      border: 1.5px solid #e8c99a;
+    }
+
+    .env-card p {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: #b08968;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .env-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: #4a3f35;
+    }
+    .env-card h2 span { color: #d6ad7b; }
+    .env-card .env-date {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.65rem;
+      color: #9a8070;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+
+    /* Small hearts that float out */
+    .env-hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .env-hearts span {
+      position: absolute;
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: heartFloat 1.2s ease forwards;
+    }
+    .env-hearts span:nth-child(1){ left:30%; top:30%; animation-delay:2s; }
+    .env-hearts span:nth-child(2){ left:55%; top:25%; animation-delay:2.1s; }
+    .env-hearts span:nth-child(3){ left:20%; top:20%; animation-delay:2.2s; }
+    .env-hearts span:nth-child(4){ left:65%; top:30%; animation-delay:2.15s; }
+    .env-hearts span:nth-child(5){ left:45%; top:15%; animation-delay:2.05s; }
+
+    /* Label under envelope */
+    .env-label {
+      margin-top: 28px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: #b08968;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: envBounceIn 0.5s ease 0.9s both, labelPulse 1.5s ease 1.5s infinite;
+      opacity: 0;
+    }
+
+    @keyframes overlayFadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+    @keyframes envBounceIn {
+      from { opacity: 0; transform: scale(0.6) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes flapOpen {
+      0%   { transform: rotateX(0deg); }
+      100% { transform: rotateX(-170deg); }
+    }
+    @keyframes cardRise {
+      from { transform: translateX(-50%) translateY(40px); opacity: 0; }
+      to   { transform: translateX(-50%) translateY(-55px); opacity: 1; }
+    }
+    @keyframes heartFloat {
+      0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+      40%  { opacity: 1; transform: translateY(-30px) scale(1); }
+      100% { opacity: 0; transform: translateY(-70px) scale(0.8); }
+    }
+    @keyframes labelPulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.5; }
+    }
+
+    /* ====== HERO ====== */
     .hero {
       height: 100vh;
       position: relative;
       overflow: hidden;
       background:
         linear-gradient(rgba(44,27,16,0.30), rgba(44,27,16,0.42)),
-        url("picNew1.jpg");
+        url("images/picNew1.jpg");
       background-size: cover;
       background-position: center top;
       background-repeat: no-repeat;
@@ -51,7 +229,7 @@
     .hero-content {
       position: relative;
       z-index: 2;
-      animation: fadeInUp 2s ease, floatText 5s ease-in-out infinite;
+      animation: fadeInUp 1.2s ease 3.8s both, floatText 5s ease-in-out 5s infinite;
     }
 
     .hero-content h1 {
@@ -69,9 +247,28 @@
 
     .hero-content span { color: #e7c8a0; }
     .top-text { letter-spacing: 4px; text-transform: uppercase; }
-    .hero-date { 
-      margin-top:0;
-      margin-bottom: 5px; 
+    .hero-date { margin-top:0; margin-bottom: 5px; }
+
+    /* Sparkle stars on hero */
+    .sparkles { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .sparkle {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparklePop ease-in-out infinite;
+    }
+    .sparkle:nth-child(1){ top:15%; left:12%; animation-duration:3s; animation-delay:4s; }
+    .sparkle:nth-child(2){ top:25%; left:80%; animation-duration:4s; animation-delay:4.5s; }
+    .sparkle:nth-child(3){ top:60%; left:8%;  animation-duration:3.5s; animation-delay:5s; }
+    .sparkle:nth-child(4){ top:70%; left:88%; animation-duration:2.8s; animation-delay:4.2s; }
+    .sparkle:nth-child(5){ top:40%; left:93%; animation-duration:3.2s; animation-delay:5.5s; }
+    .sparkle:nth-child(6){ top:80%; left:50%; animation-duration:4.2s; animation-delay:4.8s; }
+
+    @keyframes sparklePop {
+      0%,100% { opacity:0; transform:scale(0); }
+      50%      { opacity:0.85; transform:scale(1); }
     }
 
     .btn {
@@ -83,21 +280,19 @@
       transition: all 0.4s ease;
       box-shadow: 0 0 0 rgba(214,173,123,0);
     }
-
     .btn:hover {
       background: #b08968;
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(214,173,123,0.25);
     }
 
+    /* ====== COUPLE SECTION ====== */
     .couple-section {
       display: grid;
       grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
       gap: 50px;
       align-items: center;
-      animation: sectionFade 1.8s ease;
     }
-
     .couple-section img {
       width: 100%;
       border-radius: 20px;
@@ -105,21 +300,22 @@
       object-fit: cover;
       transition: transform 0.6s ease;
     }
-
     .couple-section img:hover { transform: scale(1.04); }
+    .couple-text h1 { color: #b08968; margin: 20px 0; font-size: 3rem; }
 
-    .couple-text h1 {
-      color: #b08968;
-      margin: 20px 0;
-      font-size: 3rem;
+    /* Scroll-reveal helper */
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
     }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    /* ====== COUNTDOWN ====== */
     .countdown-section, .venue-section, .gallery-section, .events-section {
       background: #fff5eb;
       text-align: center;
-      animation: sectionFade 1.8s ease;
     }
-
     .countdown {
       display: flex;
       justify-content: center;
@@ -127,34 +323,56 @@
       gap: 20px;
       margin-top: 40px;
     }
-
     .countdown div {
       background: white;
       padding: 30px;
       min-width: 120px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+    .countdown div:hover { transform: translateY(-6px) scale(1.05); }
+    .countdown span { font-size: 3rem; color: #b08968; }
+
+    /* Flip animation when digit changes */
+    .flip {
+      animation: digitFlip 0.35s ease;
+    }
+    @keyframes digitFlip {
+      0%   { transform: rotateX(0deg); opacity:1; }
+      50%  { transform: rotateX(90deg); opacity:0; }
+      100% { transform: rotateX(0deg); opacity:1; }
     }
 
-    .countdown span {
-      font-size: 3rem;
-      color: #b08968;
-    }
-
+    /* ====== EVENTS ====== */
     .events-grid, .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
       gap: 25px;
       margin-top: 40px;
     }
-
     .event-card {
       background: white;
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: default;
+    }
+    .event-card:hover {
+      transform: translateY(-8px) rotate(-1deg);
+      box-shadow: 0 20px 40px rgba(176,137,104,0.2);
+    }
+    .event-card p { color: #b08968; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 8px; }
+
+    /* Flower dividers on event cards */
+    .event-card .divider {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: #e8c99a;
     }
 
+    /* ====== GALLERY ====== */
     .gallery-grid img {
       width: 100%;
       height: 350px;
@@ -162,87 +380,157 @@
       border-radius: 20px;
       transition: transform 0.6s ease;
     }
-
     .gallery-grid img:hover { transform: scale(1.04); }
 
+    /* ====== VENUE ====== */
+    .venue-map {
+      position: relative;
+      display: block;
+      width: 100%;
+      margin-top: 35px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,.12);
+      transition: all .5s ease;
+    }
+    .venue-map:hover { transform: scale(1.02); }
+    .venue-map img { width:100%; height:78vh; object-fit:cover; display:block; }
+    .venue-overlay {
+      position: absolute; inset: 0;
+      display: flex; justify-content: center; align-items: flex-end;
+      padding-bottom: 40px;
+      background: linear-gradient(transparent 40%, rgba(0,0,0,.45));
+    }
+    .venue-overlay span {
+      color: white;
+      background: rgba(255,255,255,.18);
+      backdrop-filter: blur(10px);
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      transition: .4s;
+    }
+    .venue-map:hover .venue-overlay span { transform: translateY(-4px); }
+
+    /* ====== FOOTER ====== */
     footer {
       text-align: center;
       padding: 30px;
       background: #4a3f35;
       color: white;
     }
+    footer p { margin: 4px 0; }
+    /* little heart that pulses in footer */
+    .footer-heart {
+      display: inline-block;
+      animation: heartBeat 1.4s ease infinite;
+      color: #e8c99a;
+    }
+    @keyframes heartBeat {
+      0%,100% { transform: scale(1); }
+      14%     { transform: scale(1.3); }
+      28%     { transform: scale(1); }
+      42%     { transform: scale(1.2); }
+      70%     { transform: scale(1); }
+    }
 
+    /* ====== PETALS ====== */
     .petals span {
       position: absolute;
       display: block;
-      width: 18px;
-      height: 18px;
+      width: 18px; height: 18px;
       background: rgba(255,228,196,0.7);
       border-radius: 50% 0 50% 50%;
       animation: fall linear infinite;
       top: -10%;
     }
+    .petals span:nth-child(1){ left:10%; animation-duration:10s; animation-delay:4s; }
+    .petals span:nth-child(2){ left:20%; animation-duration:14s; animation-delay:4.5s; }
+    .petals span:nth-child(3){ left:35%; animation-duration:11s; animation-delay:5s; }
+    .petals span:nth-child(4){ left:50%; animation-duration:16s; animation-delay:4.2s; }
+    .petals span:nth-child(5){ left:65%; animation-duration:13s; animation-delay:4.8s; }
+    .petals span:nth-child(6){ left:75%; animation-duration:12s; animation-delay:5.5s; }
+    .petals span:nth-child(7){ left:85%; animation-duration:15s; animation-delay:4.3s; }
+    .petals span:nth-child(8){ left:95%; animation-duration:10s; animation-delay:5.2s; }
 
-    .petals span:nth-child(1){ left:10%; animation-duration:10s; }
-    .petals span:nth-child(2){ left:20%; animation-duration:14s; }
-    .petals span:nth-child(3){ left:35%; animation-duration:11s; }
-    .petals span:nth-child(4){ left:50%; animation-duration:16s; }
-    .petals span:nth-child(5){ left:65%; animation-duration:13s; }
-    .petals span:nth-child(6){ left:75%; animation-duration:12s; }
-    .petals span:nth-child(7){ left:85%; animation-duration:15s; }
-    .petals span:nth-child(8){ left:95%; animation-duration:10s; }
-
+    /* ====== KEYFRAMES ====== */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes floatText {
       0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50%     { transform: translateY(-8px); }
     }
-
-    @keyframes sectionFade {
-      from { opacity: 0; transform: translateY(35px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     @keyframes shimmer {
       from { transform: translateX(-100%); }
-      to { transform: translateX(100%); }
+      to   { transform: translateX(100%); }
     }
-
     @keyframes fall {
-      0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
+      0%   { transform: translateY(-10%) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
 
+    /* ====== RESPONSIVE ====== */
     @media(max-width:768px) {
       .hero-content h1 { font-size: 3rem; }
       section { padding: 60px 7%; }
+      .venue-map img { height:85vh; }
+      .venue-overlay { padding-bottom:32px; }
+      .venue-overlay span { font-size:.95rem; padding:12px 22px; }
+      .env-wrapper { width: 220px; height: 160px; }
     }
   </style>
 </head>
 <body>
 
+<!-- ====== ENVELOPE INTRO ====== -->
+<div id="envelope-overlay" aria-hidden="true">
+  <div class="env-wrapper">
+    <!-- floating hearts -->
+    <div class="env-hearts">
+      <span>💛</span><span>🌸</span><span>💛</span><span>🌸</span><span>💛</span>
+    </div>
+    <!-- card that rises out -->
+    <div class="env-card">
+      <p>You're invited</p>
+      <h2>Shaili <span>&</span> Sanjay</h2>
+      <p class="env-date">24 June 2026 · Bikaner</p>
+    </div>
+    <!-- envelope body (bottom) -->
+    <div class="env-body"></div>
+    <!-- envelope flap (opens upward) -->
+    <div class="env-flap"></div>
+  </div>
+  <p class="env-label">Opening your invitation…</p>
+</div>
+
+<!-- ====== HERO ====== -->
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="petals">
-    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <!-- sparkle stars -->
+  <div class="sparkles">
+    <div class="sparkle"></div><div class="sparkle"></div>
+    <div class="sparkle"></div><div class="sparkle"></div>
+    <div class="sparkle"></div><div class="sparkle"></div>
   </div>
   <div class="hero-content">
     <p class="top-text">Together with their families</p>
     <h1>Shaili <span>&</span> Sanjay</h1>
     <p class="hero-date">24 June 2026</p>
-    <p class="hero-date" >Daftari Palace, Bikaner</p>
-    <!-- <p class="hero-subtitle">A royal celebration of love, laughter & forever</p> -->
-    <!-- <a href="#couple" class="btn">Open Invitation</a> -->
+    <p class="hero-date">Daftari Palace, Bikaner</p>
   </div>
 </section>
 
-<section class="couple-section" id="couple">
-  <img src="main-pic.jpg" alt="Couple">
+<!-- ====== COUPLE ====== -->
+<section class="couple-section reveal" id="couple">
+  <img src="images/main-pic.jpg" alt="Couple">
   <div class="couple-text">
     <h2>We invite you to celebrate our wedding</h2>
     <h1>Shaili & Sanjay</h1>
@@ -250,7 +538,8 @@
   </div>
 </section>
 
-<section class="countdown-section">
+<!-- ====== COUNTDOWN ====== -->
+<section class="countdown-section reveal">
   <h2>Counting Down To Our Big Day</h2>
   <div class="countdown">
     <div><span id="days">00</span><p>Days</p></div>
@@ -260,47 +549,91 @@
   </div>
 </section>
 
-<section class="events-section">
+<!-- ====== EVENTS ====== -->
+<section class="events-section reveal">
   <h1>Wedding Events</h1>
   <div class="events-grid">
-    <div class="event-card"><p>22nd June</p><h3>Moong Bikherni</h3></div>
-    <div class="event-card"><p>23rd June</p><h3>Bada Geet</h3> </hr> <h3>Pageypadni</h3></div>
-    <div class="event-card"><p>24th June</p><h3>Haath Kaam</h3><h3>Mayra</h3><h3>Wedding Ceremony</h3></div>
+    <div class="event-card">
+      <p>22nd June</p>
+      <h3>Moong Bikherni</h3>
+    </div>
+    <div class="event-card">
+      <p>23rd June</p>
+      <h3>Bada Geet</h3>
+      <div class="divider">✿</div>
+      <h3>Pageypadni</h3>
+    </div>
+    <div class="event-card">
+      <p>24th June</p>
+      <h3>Haath Kaam</h3>
+      <div class="divider">✿</div>
+      <h3>Mayra</h3>
+      <div class="divider">✿</div>
+      <h3>Wedding Ceremony</h3>
+    </div>
   </div>
 </section>
 
-<section class="venue-section">
+<!-- ====== VENUE ====== -->
+<section class="venue-section reveal">
   <h1>Venue</h1>
-  <p>Daftari Palace </br> Road No. 3 , Rani Bazar</br> Industrial Area , Bikaner</p>
+  <p>
+    Daftari Palace<br>
+    Road No. 3, Rani Bazar<br>
+    Industrial Area, Bikaner
+  </p>
+  <a href="https://maps.app.goo.gl/NUvtAEVBTonYnPx89?g_st=ac" target="_blank" class="venue-map">
+    <img src="images/location.jpg" alt="Daftari Palace">
+    <div class="venue-overlay">
+      <span>📍 Tap To Open Location</span>
+    </div>
+  </a>
 </section>
 
-<section class="gallery-section">
-  <h1>Our Journey</h1>
-  <div class="gallery-grid">
-    <img src="pic1.jpg" alt="Gallery 1">
-    <img src="pic2.jpg" alt="Gallery 2">
-    <img src="pic3.jpg" alt="Gallery 3">
-  </div>
-</section>
-
+<!-- ====== FOOTER ====== -->
 <footer>
-  <p>With Love, Surana Family</p>
+  <p><span class="footer-heart">♥</span> With Love, Surana Family <span class="footer-heart">♥</span></p>
+  <p>Sanjay Surana</p>
+  <p>9830648241</p>
 </footer>
 
 <script>
-const weddingDate = new Date('June 24, 2026 19:00:00').getTime();
-function updateCountdown() {
-  const now = new Date().getTime();
-  const gap = weddingDate - now;
-  if (gap <= 0) return;
-  document.getElementById('days').innerText = String(Math.floor(gap / (1000*60*60*24))).padStart(2,'0');
-  document.getElementById('hours').innerText = String(Math.floor((gap % (1000*60*60*24)) / (1000*60*60))).padStart(2,'0');
-  document.getElementById('minutes').innerText = String(Math.floor((gap % (1000*60*60)) / (1000*60))).padStart(2,'0');
-  document.getElementById('seconds').innerText = String(Math.floor((gap % (1000*60)) / 1000)).padStart(2,'0');
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
-</script>
+  /* ---- Countdown with flip animation ---- */
+  const weddingDate = new Date('June 24, 2026 19:00:00').getTime();
+  const prev = { days:'', hours:'', minutes:'', seconds:'' };
 
+  function flipIfChanged(id, val) {
+    const el = document.getElementById(id);
+    if (el && val !== prev[id]) {
+      el.classList.remove('flip');
+      void el.offsetWidth;
+      el.classList.add('flip');
+      el.innerText = val;
+      prev[id] = val;
+    }
+  }
+
+  function updateCountdown() {
+    const gap = weddingDate - Date.now();
+    if (gap <= 0) return;
+    flipIfChanged('days',    String(Math.floor(gap / 86400000)).padStart(2,'0'));
+    flipIfChanged('hours',   String(Math.floor((gap % 86400000) / 3600000)).padStart(2,'0'));
+    flipIfChanged('minutes', String(Math.floor((gap % 3600000) / 60000)).padStart(2,'0'));
+    flipIfChanged('seconds', String(Math.floor((gap % 60000) / 1000)).padStart(2,'0'));
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ---- Scroll reveal ---- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  /* ---- Remove overlay from DOM after animation ---- */
+  const overlay = document.getElementById('envelope-overlay');
+  overlay.addEventListener('animationend', () => overlay.remove());
+</script>
 </body>
 </html>
